@@ -1,69 +1,139 @@
-import Image from "next/image";
+// app/page.tsx
+//
+// Overview page — real data from Laravel.
+// Net Income | Listing Calls (TBD) | Active Users (TBD) | Listings Views (TBD)
 
-export default function Home() {
+"use client";
+
+import { useEffect, useState } from "react";
+import { Coins, Activity, Users, Eye } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
+import { TrendCard } from "@/components/cards/TrendCard";
+import { StatCard } from "@/components/cards/StatCard";
+import { TopListCard } from "@/components/cards/TopListCard";
+import { ActiveUsersCard } from "@/components/cards/ActiveUsersCard";
+import { LineChart } from "@/components/charts/LineChart";
+import { DateRangePicker } from "@/components/ui/DateRangePicker";
+import { Spinner } from "@/components/ui/Spinner";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { formatNumber, formatToman } from "@/lib/formatters";
+import type { DateRange, OverviewResponse } from "@/lib/types";
+
+export default function OverviewPage() {
+  const [range, setRange] = useState<DateRange>("7d");
+  const [data, setData] = useState<OverviewResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/stats/overview?range=${range}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+        return res.json();
+      })
+      .then((json: OverviewResponse) => {
+        if (!cancelled) {
+          setData(json);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message || "Failed to load");
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [range]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <PageShell>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+            Overview
+          </h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            Real-time snapshot of user activity
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <DateRangePicker value={range} onChange={setRange} />
+      </div>
+
+      {loading && (
+        <div className="h-[200px] flex items-center justify-center">
+          <Spinner label="Loading..." />
         </div>
-      </main>
-    </div>
+      )}
+
+      {error && (
+        <div className="p-4 border border-red-200 dark:border-red-900 bg-red-50 dark:bg-red-950/40 rounded-lg text-sm text-red-700 dark:text-red-400">
+          Error: {error}
+        </div>
+      )}
+
+      {!loading && !error && data && (
+        <>
+          {/* KPI cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <TrendCard
+              label="Net Income"
+              value={data.net_income.total}
+              changePercent={data.net_income.trend}
+              icon={<Coins className="w-4 h-4 text-slate-400" />}
+              formatter={(v) => formatToman(v)}
+            />
+            <TrendCard
+  label="Listing Calls"
+  value={data.listing_calls.total}
+  changePercent={data.listing_calls.trend}
+  icon={<Activity className="w-4 h-4 text-slate-400" />}
+/>
+<ActiveUsersCard
+  data={data.active_users}
+  icon={<Users className="w-4 h-4 text-slate-400" />}
+/>
+            <TrendCard
+  label="Listings Views"
+  value={data.listings_views.total}
+  changePercent={data.listings_views.trend}
+  icon={<Eye className="w-4 h-4 text-slate-400" />}
+/>
+          </div>
+
+          {/* Chart + Top Events */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                Net Income Over Time
+              </h3>
+              <LineChart
+                data={data.net_income.points}
+                dataKey="amount"
+                color="#10b981"
+                labelFormatter={(v) => formatToman(v)}
+              />
+            </div>
+
+            <TopListCard
+              title="Top Events"
+              items={data.top_events.map((e) => ({
+                label: e.event_name,
+                value: formatNumber(e.count),
+              }))}
+              emptyText="No events yet"
+            />
+          </div>
+        </>
+      )}
+    </PageShell>
   );
 }
