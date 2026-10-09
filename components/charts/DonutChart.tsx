@@ -69,18 +69,18 @@ export function DonutChart({
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number, name: string) => [
-              formatToman(value),
-              name,
-            ]}
-            contentStyle={{
-              borderRadius: 8,
-              border: "1px solid #334155",
-              background: "#0f172a",
-              fontSize: 12,
-              color: "#e2e8f0",
-            }}
-          />
+          formatter={(value, name) => [
+            formatToman(typeof value === "number" ? value : 0),
+            String(name ?? ""),
+          ]}
+          contentStyle={{
+            borderRadius: 8,
+            border: "1px solid #334155",
+            background: "#0f172a",
+            fontSize: 12,
+            color: "#e2e8f0",
+          }}
+        />
         </RPieChart>
       </ResponsiveContainer>
 

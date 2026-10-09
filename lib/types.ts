@@ -318,3 +318,115 @@ export interface PlansResponse {
   top_by_income: PlanStat[];
   least_sold: PlanStat[];
 }
+
+
+// ─────────────────────────────────────────────────────────────
+// Search & Filter
+// ─────────────────────────────────────────────────────────────
+
+export interface SearchSummary {
+  total_searches: number;
+  zero_results: number;
+  zero_result_pct: number;
+  unique_queries: number;
+  top_city: {
+    city_slug: string;
+    city_title: string;
+    city_id: number | string | null;
+    search_count: number;
+  } | null;
+}
+
+export interface SearchCityStat {
+  city_slug: string;
+  city_title: string;
+  city_id: number | string | null;
+  search_count: number;
+}
+
+export interface SearchRow {
+  id: number;
+  query: string;
+  city_slug: string | null;
+  city_id: number | null;
+  tab: string | null;
+  trigger: string | null;
+  results_count: number;
+  total_properties: number;
+  created_at: string;
+}
+
+export interface FilterRow {
+  id: number;
+  filters: Array<{ key: string; value: string }>;
+  filters_count: number;
+  city_slug: string | null;
+  category_slug: string | null;
+  results_count: number;
+  returned_count: number;
+  is_reset: boolean;
+  created_at: string;
+}
+
+export interface SearchFilterResponse {
+  summary: SearchSummary;
+  top_cities: SearchCityStat[];
+  last_searches: SearchRow[];
+  last_filters: FilterRow[];
+}
+
+// ─────────────────────────────────────────────────────────────
+// User Journeys
+// ─────────────────────────────────────────────────────────────
+
+export interface UserJourneySummary {
+  total_users: number;
+  navigated_count: number;
+  navigated_pct: number;
+  called_count: number;
+  called_pct: number;
+  intent_count: number;
+  intent_pct: number;
+  searched_count: number;
+  searched_pct: number;
+}
+
+export interface TimelineEvent {
+  type: "event";
+  event_name: string;
+  count: number;
+  label: string;
+  created_at: string;
+  payload?: Record<string, unknown>;   // full payload
+}
+
+export interface TimelineGap {
+  type: "gap";
+  gap_seconds: number;
+  gap_hours: number;
+  is_return: boolean;
+  created_at: string;
+}
+
+export type TimelineItem = TimelineEvent | TimelineGap;
+
+export interface UserJourney {
+  anonymous_id: string;
+  event_count: number;
+  visit_count: number;
+  duration_seconds: number;
+  started_at: string;
+  ended_at: string;
+  last_page: string;
+  has_navigated: boolean;
+  has_call: boolean;
+  has_intent: boolean;
+  has_search: boolean;
+  has_filter: boolean;
+  timeline: TimelineItem[];
+}
+
+export interface UserJourneysResponse {
+  summary: UserJourneySummary;
+  journeys: UserJourney[];
+}

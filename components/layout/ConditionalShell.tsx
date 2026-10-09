@@ -1,21 +1,24 @@
 // components/layout/ConditionalShell.tsx
 //
-// Wraps children with sidebar + header, EXCEPT on /login.
+// Shell that hides sidebar on /login and manages sidebar collapse state.
+// Imports Sidebar and Header directly to avoid passing functions from
+// a server component (app/layout.tsx) to a client component.
 
 "use client";
 
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { useState, ReactNode } from "react";
+import { Sidebar } from "./Sidebar";
+import { Header } from "./Header";
 
 interface Props {
-  sidebar: ReactNode;
-  header: ReactNode;
   children: ReactNode;
 }
 
-export function ConditionalShell({ sidebar, header, children }: Props) {
+export function ConditionalShell({ children }: Props) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
+  const [collapsed, setCollapsed] = useState(false);
 
   if (isLoginPage) {
     return <>{children}</>;
@@ -23,9 +26,10 @@ export function ConditionalShell({ sidebar, header, children }: Props) {
 
   return (
     <div className="flex min-h-screen">
-      {sidebar}
+      <Sidebar collapsed={collapsed} />
+
       <div className="flex-1 flex flex-col min-w-0">
-        {header}
+        <Header onToggleSidebar={() => setCollapsed((c) => !c)} />
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>

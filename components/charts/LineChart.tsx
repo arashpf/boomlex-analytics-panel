@@ -67,11 +67,12 @@ export function LineChart({
             tickLine={false}
             width={50}
           />
-          <Tooltip
+                    <Tooltip
             labelFormatter={(v) => formatDateShort(v as string)}
-            formatter={(value: number) =>
-              labelFormatter ? labelFormatter(value) : formatNumber(value)
-            }
+            formatter={(value) => {
+              const num = typeof value === "number" ? value : 0;
+              return labelFormatter ? labelFormatter(num) : formatNumber(num);
+            }}
             contentStyle={{
               borderRadius: 8,
               border: "1px solid #334155",
