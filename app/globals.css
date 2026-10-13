@@ -24,3 +24,23 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   Referrer portal mode
+   The /ref/[token] page toggles .ref-portal-mode on <body> while
+   mounted, hiding the admin sidebar/header/nav so the public
+   read-only dashboard is clean.
+   ───────────────────────────────────────────────────────────── */
+
+   body.ref-portal-mode aside,
+   body.ref-portal-mode header,
+   body.ref-portal-mode nav {
+     display: none !important;
+   }
+   
+   /* Neutralize the sidebar's left offset on the main content */
+   body.ref-portal-mode main,
+   body.ref-portal-mode [class*="ml-"] {
+     margin-left: 0 !important;
+   }

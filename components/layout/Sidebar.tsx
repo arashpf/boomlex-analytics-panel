@@ -17,6 +17,8 @@ import {
   Briefcase,
   Route,
   Package,
+  Monitor,
+
   Search as SearchIcon,
 } from "lucide-react";
 import clsx from "clsx";
@@ -31,6 +33,8 @@ const NAV_ITEMS = [
   { href: "/sessions",  label: "Sessions",  icon: Users },
   { href: "/agents",    label: "Agents",    icon: Briefcase },
   { href: "/plans",     label: "Plans",     icon: Package },
+  { href: "/platform", label: "Platform", icon: Monitor },
+  { href: "/referrers", label: "Referrers", icon: Users },
   { href: "/realtime",  label: "Realtime",  icon: Zap },
 ];
 

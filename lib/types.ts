@@ -430,3 +430,109 @@ export interface UserJourneysResponse {
   summary: UserJourneySummary;
   journeys: UserJourney[];
 }
+
+// ─────────────────────────────────────────────────────────────
+// Platform Split (Web vs App)
+// ─────────────────────────────────────────────────────────────
+
+export interface PlatformSummary {
+  total_events: number;
+  web_count: number;
+  app_count: number;
+  web_pct: number;
+  app_pct: number;
+  ratio: number | null;
+}
+
+export interface PlatformBreakdownRow {
+  event_key: string;
+  label: string;
+  web: number;
+  app: number;
+  total: number;
+  web_pct: number;
+  app_pct: number;
+  is_money: boolean;
+}
+
+export interface PlatformResponse {
+  summary: PlatformSummary;
+  income: PlatformBreakdownRow;
+  breakdown: PlatformBreakdownRow[];
+}
+
+// ─────────────────────────────────────────────────────────────
+// Referrers (affiliate/commission system)
+// ─────────────────────────────────────────────────────────────
+
+export type ReferrerChannelType =
+  | "instagram"
+  | "youtube"
+  | "telegram"
+  | "whatsapp"
+  | "aparat"
+  | "other";
+
+export interface ReferrerChannel {
+  id: number;
+  code: string;
+  channel: ReferrerChannelType;
+  channel_handle: string | null;
+  description?: string | null;
+  is_active: boolean;
+}
+
+export interface Referrer {
+  id: number;
+  name: string;
+  phone: string | null;
+  description: string | null;
+  commission_rate: number;
+  commission_notes: string | null;
+  is_active: boolean;
+  has_token: boolean;
+  created_at: string;
+  channels: ReferrerChannel[];
+  users_count: number;
+}
+
+export interface ReferrersListResponse {
+  referrers: Referrer[];
+}
+
+export interface ReferrerDetailResponse {
+  ok: boolean;
+  referrer: Referrer;
+}
+
+export interface CreateReferrerPayload {
+  name: string;
+  phone?: string | null;
+  description?: string | null;
+  commission_rate?: number;
+  commission_notes?: string | null;
+  channels: Array<{
+    channel: ReferrerChannelType;
+    code: string;
+    channel_handle?: string | null;
+    description?: string | null;
+  }>;
+}
+
+export interface AddChannelPayload {
+  channel: ReferrerChannelType;
+  code: string;
+  channel_handle?: string | null;
+  description?: string | null;
+}
+
+export interface AddChannelResponse {
+  ok: boolean;
+  channel: ReferrerChannel;
+}
+
+export interface GenerateTokenResponse {
+  ok: boolean;
+  token: string;
+  url: string;
+}
