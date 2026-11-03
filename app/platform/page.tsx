@@ -15,7 +15,7 @@ import { formatNumber, formatPercent } from "@/lib/formatters";
 import type { DateRange, PlatformResponse } from "@/lib/types";
 
 export default function PlatformPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<PlatformResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

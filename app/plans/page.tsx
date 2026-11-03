@@ -15,7 +15,7 @@ import { formatNumber, formatToman, formatPercent } from "@/lib/formatters";
 import type { DateRange, PlansResponse } from "@/lib/types";
 
 export default function PlansPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<PlansResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

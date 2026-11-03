@@ -15,7 +15,7 @@ import { formatDuration, formatNumber, formatPercent } from "@/lib/formatters";
 import type { DateRange, SessionsResponse } from "@/lib/types";
 
 export default function SessionsPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<SessionsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

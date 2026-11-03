@@ -18,7 +18,7 @@ import { formatNumber, formatPercent } from "@/lib/formatters";
 import type { DateRange, AgentsResponse } from "@/lib/types";
 
 export default function AgentsPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<AgentsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

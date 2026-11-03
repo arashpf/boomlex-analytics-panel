@@ -16,7 +16,7 @@ import { formatToman } from "@/lib/formatters";
 import type { DateRange, CitiesResponse } from "@/lib/types";
 
 export default function CitiesPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<CitiesResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -125,6 +125,13 @@ export default function CitiesPage() {
           {/* Views tables */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <CitiesTable
+              title="Top Cities by Listing Views"
+              data={data.top_by_listing_views}
+              metric="listing_views"
+              showIncome
+              emptyText="No listing views"
+            />
+            <CitiesTable
               title="Top Cities by City Views"
               data={data.top_by_city_views}
               metric="city_views"
@@ -138,13 +145,7 @@ export default function CitiesPage() {
               showIncome
               emptyText="No category views"
             />
-            <CitiesTable
-              title="Top Cities by Listing Views"
-              data={data.top_by_listing_views}
-              metric="listing_views"
-              showIncome
-              emptyText="No listing views"
-            />
+            
           </div>
         </>
       )}

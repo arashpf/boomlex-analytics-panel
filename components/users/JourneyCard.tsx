@@ -1,8 +1,8 @@
 // components/users/JourneyCard.tsx
 //
 // Single user journey card with a vertical event timeline.
-// Collapsed by default: shows the LAST N items (most recent).
-// Expand reveals the full timeline.
+// Collapsed by default: shows the FIRST N items (most recent).
+// Expand reveals the older events below.
 
 import { useState } from "react";
 import {
@@ -25,7 +25,7 @@ import {
 import { formatRelativeTime, formatDuration } from "@/lib/formatters";
 import type { UserJourney, TimelineItem, TimelineEvent } from "@/lib/types";
 
-// How many timeline items to show when collapsed (from the END).
+// How many timeline items to show when collapsed (from the START).
 const TIMELINE_PREVIEW = 3;
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -78,18 +78,21 @@ export function JourneyCard({ journey }: Props) {
   if (journey.has_search) badges.push("Searched");
   if (journey.has_filter) badges.push("Filtered");
 
-  // ─── Slice the timeline for collapsed mode ───
-  // Collapsed: show the LAST TIMELINE_PREVIEW items (most recent activity).
-  // Expanded: show all items from the beginning.
-  const total = journey.timeline.length;
+  // ─── Reverse timeline ───
+  // We simply reverse the array so the newest event is first.
+  const reversedTimeline = [...journey.timeline].reverse();
+
+  const total = reversedTimeline.length;
   const canCollapse = total > TIMELINE_PREVIEW;
   const hiddenCount = canCollapse ? total - TIMELINE_PREVIEW : 0;
 
+  // Collapsed: show the FIRST TIMELINE_PREVIEW items (which are now the newest).
+  // Expanded: show all items.
   const visibleItems = expanded
-    ? journey.timeline
+    ? reversedTimeline
     : canCollapse
-    ? journey.timeline.slice(-TIMELINE_PREVIEW)
-    : journey.timeline;
+    ? reversedTimeline.slice(0, TIMELINE_PREVIEW)
+    : reversedTimeline;
 
   return (
     <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
@@ -246,140 +249,16 @@ function TimelineEventRow({
           {event.label}
         </div>
 
-        {/* Full payload — rendered as key/value chips */}
-        {event.payload && Object.keys(event.payload).length > 0 && (
+        {/* Payload Viewer removed as requested */}
+        {/* {event.payload && Object.keys(event.payload).length > 0 && (
           <PayloadViewer payload={event.payload} />
-        )}
+        )} */}
 
         <div className="text-[10px] text-slate-400 mt-1.5">
           {formatRelativeTime(event.created_at)}
         </div>
       </div>
     </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────
-// Payload viewer — human-readable rendering of the event payload
-// ─────────────────────────────────────────────────────────────
-
-function PayloadViewer({ payload }: { payload: Record<string, unknown> }) {
-  // Fields to hide (noise)
-  const HIDDEN_FIELDS = new Set([
-    "from_page",
-    "has_neighborhoods",
-    "has_features",
-    "has_sort",
-  ]);
-
-  const entries = Object.entries(payload).filter(([key, value]) => {
-    // Skip known noise
-    if (HIDDEN_FIELDS.has(key)) return false;
-
-    // Skip empty/null/undefined values
-    if (value === null || value === undefined || value === "") return false;
-
-    // Skip empty arrays
-    if (Array.isArray(value) && value.length === 0) return false;
-
-    // Skip empty objects
-    if (
-      typeof value === "object" &&
-      value !== null &&
-      !Array.isArray(value) &&
-      Object.keys(value).length === 0
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-
-  if (entries.length === 0) return null;
-
-  return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
-      {entries.map(([key, value]) => (
-        <PayloadChip key={key} label={key} value={value} />
-      ))}
-    </div>
-  );
-}
-
-function PayloadChip({ label, value }: { label: string; value: unknown }) {
-  // Nested object → flatten into sub-chips
-  if (typeof value === "object" && value !== null && !Array.isArray(value)) {
-    const nested = Object.entries(value as Record<string, unknown>);
-    if (nested.length === 0) return null;
-
-    return (
-      <>
-        {nested.map(([k, v]) => (
-          <PayloadChip key={`${label}.${k}`} label={k} value={v} />
-        ))}
-      </>
-    );
-  }
-
-  // Array → join values
-  if (Array.isArray(value)) {
-    if (value.length === 0) return null;
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <span className="text-slate-500 dark:text-slate-400">{label}:</span>
-        <span className="font-medium text-slate-800 dark:text-slate-200">
-          {value.map((v) => String(v)).join(", ")}
-        </span>
-      </span>
-    );
-  }
-
-  // Boolean → checkmark
-  if (typeof value === "boolean") {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <span className="text-slate-500 dark:text-slate-400">{label}:</span>
-        <span
-          className={
-            "font-medium " +
-            (value
-              ? "text-emerald-600 dark:text-emerald-400"
-              : "text-slate-500 dark:text-slate-400")
-          }
-        >
-          {value ? "✓" : "✗"}
-        </span>
-      </span>
-    );
-  }
-
-  // Number → format with commas
-  if (typeof value === "number") {
-    return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-        <span className="text-slate-500 dark:text-slate-400">{label}:</span>
-        <span className="font-medium text-slate-800 dark:text-slate-200 tabular-nums">
-          {value.toLocaleString("en-US")}
-        </span>
-      </span>
-    );
-  }
-
-  // String (possibly numeric)
-  const str = String(value);
-  const numeric = /^\d+$/.test(str) ? parseInt(str, 10) : null;
-  const display =
-    numeric !== null && numeric > 9999
-      ? numeric.toLocaleString("en-US")
-      : str;
-
-  return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-full">
-      <span className="text-slate-500 dark:text-slate-400 shrink-0">{label}:</span>
-      <span className="font-medium text-slate-800 dark:text-slate-200 truncate">
-        {display}
-      </span>
-    </span>
   );
 }
 

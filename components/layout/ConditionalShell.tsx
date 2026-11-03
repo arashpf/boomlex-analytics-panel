@@ -18,7 +18,7 @@ interface Props {
 export function ConditionalShell({ children }: Props) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   if (isLoginPage) {
     return <>{children}</>;

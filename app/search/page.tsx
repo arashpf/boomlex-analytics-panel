@@ -16,7 +16,7 @@ import { formatNumber, formatPercent } from "@/lib/formatters";
 import type { DateRange, SearchFilterResponse } from "@/lib/types";
 
 export default function SearchPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<SearchFilterResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

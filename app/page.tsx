@@ -1,12 +1,12 @@
 // app/page.tsx
 //
 // Overview page — real data from Laravel.
-// Net Income | Listing Calls (TBD) | Active Users (TBD) | Listings Views (TBD)
+// Net Income | Listing Calls | Listing SMS | Active Users | Listings Views
 
 "use client";
 
 import { useEffect, useState } from "react";
-import { Coins, Activity, Users, Eye } from "lucide-react";
+import { Coins, Activity, Users, Eye, MessageSquare } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { TrendCard } from "@/components/cards/TrendCard";
 import { StatCard } from "@/components/cards/StatCard";
@@ -20,7 +20,8 @@ import { formatNumber, formatToman } from "@/lib/formatters";
 import type { DateRange, OverviewResponse } from "@/lib/types";
 
 export default function OverviewPage() {
-  const [range, setRange] = useState<DateRange>("7d");
+  // const [range, setRange] = useState<DateRange>("7d");
+  const [range, setRange] = useState<DateRange>("24h");
   const [data, setData] = useState<OverviewResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -82,8 +83,8 @@ export default function OverviewPage() {
 
       {!loading && !error && data && (
         <>
-          {/* KPI cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* KPI cards - Changed to lg:grid-cols-5 to fit the new SMS card */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <TrendCard
               label="Net Income"
               value={data.net_income.total}
@@ -92,21 +93,28 @@ export default function OverviewPage() {
               formatter={(v) => formatToman(v)}
             />
             <TrendCard
-  label="Listing Calls"
-  value={data.listing_calls.total}
-  changePercent={data.listing_calls.trend}
-  icon={<Activity className="w-4 h-4 text-slate-400" />}
-/>
-<ActiveUsersCard
-  data={data.active_users}
-  icon={<Users className="w-4 h-4 text-slate-400" />}
-/>
+              label="Listing Calls"
+              value={data.listing_calls.total}
+              changePercent={data.listing_calls.trend}
+              icon={<Activity className="w-4 h-4 text-slate-400" />}
+            />
+            {/* NEW: Listing SMS Card */}
             <TrendCard
-  label="Listings Views"
-  value={data.listings_views.total}
-  changePercent={data.listings_views.trend}
-  icon={<Eye className="w-4 h-4 text-slate-400" />}
-/>
+              label="Listing SMS"
+              value={data.listing_sms?.total || 0}
+              changePercent={data.listing_sms?.trend}
+              icon={<MessageSquare className="w-4 h-4 text-slate-400" />}
+            />
+            <ActiveUsersCard
+              data={data.active_users}
+              icon={<Users className="w-4 h-4 text-slate-400" />}
+            />
+            <TrendCard
+              label="Listings Views"
+              value={data.listings_views.total}
+              changePercent={data.listings_views.trend}
+              icon={<Eye className="w-4 h-4 text-slate-400" />}
+            />
           </div>
 
           {/* Chart + Top Events */}
