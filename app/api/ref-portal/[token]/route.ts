@@ -13,7 +13,7 @@ import type { NextRequest } from "next/server";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.ajur.app";
+const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.boomlex.ir";
 
 interface Ctx {
   params: Promise<{ token: string }>;

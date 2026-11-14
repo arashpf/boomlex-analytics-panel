@@ -58,7 +58,7 @@ export function ReferrerCard({
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   async function handleCopyLink(code: string) {
-    const url = `https://ajur.app/?r=${code}`;
+    const url = `https://boomlex.ir/?r=${code}`;
     try {
       await navigator.clipboard.writeText(url);
       setCopiedCode(code);
@@ -182,7 +182,7 @@ function ChannelRow({
 }) {
   const Icon = CHANNEL_ICONS[channel.channel] || CHANNEL_ICONS.other;
   const iconColor = CHANNEL_COLORS[channel.channel] || CHANNEL_COLORS.other;
-  const trackingUrl = `https://ajur.app/?r=${channel.code}`;
+  const trackingUrl = `https://boomlex.ir/?r=${channel.code}`;
 
   return (
     <div className="px-5 py-3 flex items-center gap-3 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition">

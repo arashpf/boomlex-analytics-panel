@@ -156,7 +156,7 @@ Browser (or SSR) fires trackEvent / fireSsrEvent
            │
            ├── Client clicks → lib/track.js → POST /api/track-event
            │
-           └── SSR events → lib/ssrTrack.js → POST api.ajur.app/api/analytics/track
+           └── SSR events → lib/ssrTrack.js → POST api.boomlex.ir/api/analytics/track
                               (server-to-server, no CORS)
            │
            ▼

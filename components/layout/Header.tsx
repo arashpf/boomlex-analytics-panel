@@ -27,7 +27,7 @@ function getTitle(pathname: string): string {
   const match = Object.keys(PAGE_TITLES).find(
     (p) => p !== "/" && pathname.startsWith(p)
   );
-  return match ? PAGE_TITLES[match] : "Ajur Analytics";
+  return match ? PAGE_TITLES[match] : "boomlex Analytics";
 }
 
 interface HeaderProps {

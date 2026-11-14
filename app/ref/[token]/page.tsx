@@ -512,7 +512,7 @@ function ChannelRow({
   const [copied, setCopied] = useState(false);
   const Icon = CHANNEL_ICONS[channel.channel] || CHANNEL_ICONS.other;
   const color = CHANNEL_COLORS[channel.channel] || CHANNEL_COLORS.other;
-  const url = `https://ajur.app/?r=${channel.code}`;
+  const url = `https://boomlex.ir/?r=${channel.code}`;
   const label = CHANNEL_LABELS[channel.channel] || channel.channel;
 
   async function copy() {

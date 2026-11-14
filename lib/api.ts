@@ -22,7 +22,7 @@ import type {
   // ─────────────────────────────────────────────────────────────
   
   const LARAVEL_API_URL =
-    process.env.LARAVEL_API_URL || "https://api.ajur.app";
+    process.env.LARAVEL_API_URL || "https://api.boomlex.ir";
   
   const LARAVEL_PANEL_TOKEN = process.env.LARAVEL_PANEL_TOKEN || "";
   

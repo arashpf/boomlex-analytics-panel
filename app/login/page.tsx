@@ -128,7 +128,7 @@ export default function LoginPage() {
         {/* Logo / Title */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-            Ajur Analytics
+            boomlex Analytics
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Sign in to continue
@@ -147,7 +147,7 @@ export default function LoginPage() {
         </Suspense>
 
         <p className="text-xs text-slate-400 text-center mt-6">
-          Ajur Analytics Panel
+          boomlex Analytics Panel
         </p>
       </div>
     </main>

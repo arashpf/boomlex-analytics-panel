@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
-const SESSION_COOKIE_NAME = "ajur_panel_session";
+const SESSION_COOKIE_NAME = "boomlex_panel_session";
 
 // Public paths that don't require auth
 const PUBLIC_PATHS = ["/login"];

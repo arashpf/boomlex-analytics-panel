@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.ajur.app";
+  const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.boomlex.ir";
   const LARAVEL_PANEL_TOKEN = process.env.LARAVEL_PANEL_TOKEN || "";
 
   try {

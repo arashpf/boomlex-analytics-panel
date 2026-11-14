@@ -33,27 +33,36 @@ export interface NetIncome {
 }
 
 export interface ListingCalls {
-    total: number;
-    previous_total: number;
-    trend: number;
-    points: TimeSeriesPoint[];
-  }
+  total: number;
+  previous_total: number;
+  trend: number;
+  points: TimeSeriesPoint[];
+}
 
-  export interface ListingsViews {
-    total: number;
-    previous_total: number;
-    trend: number;
-    points: TimeSeriesPoint[];
-  }
+// ─── ADDED: Listing SMS interface ───
+export interface ListingSms {
+  total: number;
+  previous_total: number;
+  trend: number;
+  points: TimeSeriesPoint[];
+}
+// ────────────────────────────────────
 
-  export interface ActiveUsers {
-    total: number;
-    new: number;
-    returning: number;
-    previous_total: number;
-    trend: number;
-    points: TimeSeriesPoint[];
-  }
+export interface ListingsViews {
+  total: number;
+  previous_total: number;
+  trend: number;
+  points: TimeSeriesPoint[];
+}
+
+export interface ActiveUsers {
+  total: number;
+  new: number;
+  returning: number;
+  previous_total: number;
+  trend: number;
+  points: TimeSeriesPoint[];
+}
 
 // ─────────────────────────────────────────────────────────────
 // Overview page
@@ -85,6 +94,7 @@ export interface OverviewResponse {
   range: DateRange;
   net_income: NetIncome;
   listing_calls: ListingCalls;
+  listing_sms: ListingSms; // <-- ADDED THIS
   listings_views: ListingsViews;
   active_users: ActiveUsers;
   stats: OverviewStats;

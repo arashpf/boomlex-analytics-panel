@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const range = searchParams.get("range") || "7d";
 
-  const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.ajur.app";
+  const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.boomlex.ir";
   const LARAVEL_PANEL_TOKEN = process.env.LARAVEL_PANEL_TOKEN || "";
 
   const res = await fetch(`${LARAVEL_API_URL}/api/analytics/stats/events?range=${range}`, {

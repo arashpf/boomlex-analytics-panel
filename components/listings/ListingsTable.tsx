@@ -1,7 +1,7 @@
 // components/listings/ListingsTable.tsx
 //
 // Reusable table for listings: shows listing_id, views, calls, conversion %.
-// Rows link to the live listing on ajur.app in a new tab.
+// Rows link to the live listing on boomlex.ir in a new tab.
 
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
@@ -69,7 +69,7 @@ export function ListingsTable({
                   {/* Listing ID — clickable */}
                   <td className="px-3 py-3">
                     <Link
-                      href={`https://ajur.app/worker/${row.listing_id}`}
+                      href={`https://boomlex.ir/worker/${row.listing_id}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition group"

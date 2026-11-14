@@ -62,7 +62,7 @@ export function Sidebar({ collapsed }: SidebarProps) {
         <BarChart3 className="w-5 h-5 text-slate-900 dark:text-slate-100 shrink-0" />
         {!collapsed && (
           <span className="font-semibold text-slate-900 dark:text-slate-100 whitespace-nowrap overflow-hidden">
-            Ajur Analytics
+            boomlex Analytics
           </span>
         )}
       </div>

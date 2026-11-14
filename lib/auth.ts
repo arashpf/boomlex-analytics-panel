@@ -18,7 +18,7 @@ import type { SessionPayload } from "./types";
 // Config
 // ─────────────────────────────────────────────────────────────
 
-export const SESSION_COOKIE_NAME = "ajur_panel_session";
+export const SESSION_COOKIE_NAME = "boomlex_panel_session";
 const SESSION_DURATION_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
 function getSecret(): Uint8Array {

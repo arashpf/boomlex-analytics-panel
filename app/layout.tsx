@@ -8,8 +8,8 @@ import { ConditionalShell } from "@/components/layout/ConditionalShell";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Ajur Analytics",
-  description: "Internal analytics panel for Ajur",
+  title: "boomlex Analytics",
+  description: "Internal analytics panel for boomlex",
 };
 
 export default function RootLayout({

@@ -180,7 +180,7 @@ export function AddChannelDialog({
                 </button>
               </div>
               <p className="text-xs text-slate-400 mt-1 font-mono">
-                → https://ajur.app/?r={code || "code"}
+                → https://boomlex.ir/?r={code || "code"}
               </p>
             </div>
 

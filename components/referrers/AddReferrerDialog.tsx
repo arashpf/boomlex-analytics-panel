@@ -329,7 +329,7 @@ export function AddReferrerDialog({ open, onClose, onSuccess }: Props) {
               <p className="text-xs text-slate-400 mt-2">
                 Tracking link will be:{" "}
                 <span className="font-mono">
-                  https://ajur.app/?r=
+                  https://boomlex.ir/?r=
                   {channels[0]?.code || "code"}
                 </span>
               </p>

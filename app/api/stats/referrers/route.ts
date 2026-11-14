@@ -11,7 +11,7 @@ import { getSessionFromCookies } from "@/lib/auth";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.ajur.app";
+const LARAVEL_API_URL = process.env.LARAVEL_API_URL || "https://api.boomlex.ir";
 const LARAVEL_PANEL_TOKEN = process.env.LARAVEL_PANEL_TOKEN || "";
 
 function laravelHeaders() {
