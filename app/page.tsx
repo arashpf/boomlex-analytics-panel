@@ -63,7 +63,7 @@ export default function OverviewPage() {
             Overview
           </h2>
           <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-            Real-time snapshot of user activity
+            Real-time snapshot  is here
           </p>
         </div>
         <DateRangePicker value={range} onChange={setRange} />
