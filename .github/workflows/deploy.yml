@@ -1,4 +1,4 @@
-name: Deploy Next.js to cPanel
+name: Deploy Next.js to cPanel via FTP
 
 on:
   push:
@@ -21,26 +21,19 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy files to Server via SCP
-        uses: appleboy/scp-action@master
+      - name: Deploy to Server via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: ".next/,public/,package.json,package-lock.json"
-          target: ${{ secrets.REMOTE_PATH }}
-          overwrite: true
-
-      - name: Install Production Deps & Restart App
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd ${{ secrets.REMOTE_PATH }}
-            npm ci --omit=dev
-            mkdir -p tmp
-            touch tmp/restart.txt
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          local-dir: ./
+          server-dir: ${{ secrets.REMOTE_PATH }}/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/.next/cache/**
+            src/**
+            .github/**
